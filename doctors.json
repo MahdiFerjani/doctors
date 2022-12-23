@@ -1,0 +1,25 @@
+{
+  "doctors": [
+    {
+      "id": 1,
+      "name": "doctor 1",
+      "speciality": "dentist",
+      "description": "graduated from monastir university"
+    },
+
+    {
+      "id": 2,
+      "name": "doctor 2",
+      "speciality": "dentist",
+      "description": "graduated from monastir university"
+    },
+    {
+      "id": 1,
+      "name": "doctor 3",
+      "speciality": "dentist",
+      "description": "graduated from monastir university"
+    }
+  ]
+ 
+ 
+}
