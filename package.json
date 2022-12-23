@@ -23,7 +23,8 @@
     "ionicons": "^6.0.3",
     "vue": "^3.2.21",
     "vue-router": "^4.0.12",
-    "vue-star-rating": "^2.1.0"
+    "vue-star-rating": "^2.1.0",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@capacitor/cli": "4.6.1",

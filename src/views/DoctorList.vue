@@ -1,5 +1,5 @@
 <template>
-    <ion-menu content-id="main-content">
+   <!--  <ion-menu content-id="main-content">
       <ion-content id="menu" class="ion-padding">
         <ion-menu-toggle>
             <ion-button fill="clear">
@@ -7,7 +7,7 @@
 </ion-button>
         </ion-menu-toggle>
       </ion-content>
-    </ion-menu>
+    </ion-menu>-->
     <ion-page id="main-content"> 
     <ion-header class="back"><ion-toolbar class="back">
         <ion-menu-toggle>
@@ -69,19 +69,16 @@
 import {
       IonButton,
       IonContent,
-      IonMenu,
       IonMenuToggle,
       IonPage,
       IonSegment, IonSegmentButton
     } from '@ionic/vue';
-import { parseStringStyle } from '@vue/shared';
     import axios from  "axios";
     import { defineComponent } from 'vue';
     export default defineComponent({
       components: {
         IonButton,
         IonContent,
-        IonMenu,
         IonMenuToggle,
         IonPage,
         IonSegment, IonSegmentButton
@@ -91,6 +88,11 @@ import { parseStringStyle } from '@vue/shared';
          doctors:[] as any,
         }
       },
+      computed: {
+    currentUser() {
+      return this.$store.state.auth.user;
+    }
+  },
       methods:{
     getDoctors(){
       axios.get('http://localhost:3000/doctors').then((response)=>{
@@ -102,6 +104,13 @@ import { parseStringStyle } from '@vue/shared';
         this.$router.push({ path:`/doctor/${e}`})
        }
       },
+      mounted: function(){
+      if (this.currentUser == null) {
+      this.$router.push('/signin');
+    }
+   //  alert('hh)')
+//this.OneSignalInit()
+},
        
     created(){
 

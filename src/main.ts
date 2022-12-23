@@ -19,6 +19,7 @@ import '@ionic/vue/css/text-alignment.css';
 import '@ionic/vue/css/text-transformation.css';
 import '@ionic/vue/css/flex-utils.css';
 import '@ionic/vue/css/display.css';
+import store from "./store"
 
 /* Theme variables */
 import './theme/variables.css';
@@ -26,6 +27,8 @@ import './theme/variables.css';
 const app = createApp(App)
   .use(IonicVue)
   .use(router)
+  .use(store as any)
+
   .use(VueGoogleMaps, {
     load: {
         key: 'AIzaSyBw834lTlc-gq-XDeBV8jSk3cleQl0i_j0',

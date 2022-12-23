@@ -1,18 +1,20 @@
 <template>
   <ion-app>
-    <ion-router-outlet />
+    <MenuPage></MenuPage>
+
   </ion-app>
 </template>
 
 <script lang="ts">
-import { IonApp, IonRouterOutlet } from '@ionic/vue';
+import { IonApp } from '@ionic/vue';
 import { defineComponent } from 'vue';
+import MenuPage from './views/MenuPage.vue';
 
 export default defineComponent({
   name: 'App',
   components: {
     IonApp,
-    IonRouterOutlet
+    MenuPage
   }
 });
 </script>
