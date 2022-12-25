@@ -2,7 +2,7 @@
     <ion-page>
      
       <ion-content :fullscreen="true">
-        <ion-button class="button1"   @click="$router.push('/signup')" shape="round" color="#7FD9B2" size="large">Sign in</ion-button>
+        <ion-button class="button1"  @click="$router.push('/signup')" shape="round" color="#7FD9B2" size="large">Sign in</ion-button>
         <ion-button   @click="$router.push({path:'/signup' })" class="button2"  shape="round" color="#7FD9B2" size="large">Sign up</ion-button>
       </ion-content>
      

@@ -7,6 +7,7 @@ import DoctorList from '../views/DoctorList.vue'
 import DoctorDetail from '../views/DoctorDetail.vue'
 import signin from '../views/SinginPage.vue'
 import profile from '../views/ProfilePage.vue'
+import RendezVous from '../views/RendezVous.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -52,7 +53,13 @@ const routes: Array<RouteRecordRaw> = [
     path :'/doctor/:id',
     name:'DoctorDetail',
     component:DoctorDetail
+  },
+  {
+  path :'/rendezvous',
+  name :'/RendezVous',
+  component:RendezVous
   }
+
 ]
 
 const router = createRouter({

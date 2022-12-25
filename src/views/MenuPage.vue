@@ -24,8 +24,6 @@ Deconexion          </ion-label>
   </ion-menu>
   <ion-page id="main-content">
     <ion-header>
-
-
     </ion-header>
     <ion-content class="ion-padding">
       <ion-router-outlet />
@@ -50,20 +48,17 @@ Deconexion          </ion-label>
     IonLabel,IonItem,IonIcon
   } from '@ionic/vue';
   import { defineComponent } from 'vue';
-
   export default defineComponent({
     components: {
       IonRouterOutlet,
-
       IonIcon,
       IonList,
       IonMenuToggle,
-    IonLabel,IonItem,    
+      IonLabel,IonItem,    
       IonContent,
       IonHeader,
       IonMenu,
       IonPage,
-
     },
     data(){
   return {
@@ -100,12 +95,10 @@ this.title =titre
 },
   });
 </script>
-
 <style scoped>
   ion-menu::part(backdrop) {
     background-color: rgba(255, 0, 255, 0.5);
   }
-
   ion-menu::part(container) {
     border-radius: 0 20px 20px 0;
 
