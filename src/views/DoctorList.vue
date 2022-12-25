@@ -14,6 +14,9 @@
 </ion-toolbar></ion-header>
 
 <ion-content>
+
+
+  
   <ion-item class="header" lines="none">
     <strong slot="start">Doctor <br> Appointment</strong>
 
@@ -56,24 +59,28 @@
 
   <div class="list-doctors">
     <ion-item :key="index"
-        v-for="(item, index) in doctors" lines="none" class="ion-activatable ripple-parent" @click="openModal">
+        v-for="(item, index) in Doctors" lines="none" class="ion-activatable ripple-parent" @click="openModal(item)">
       <ion-ripple-effect></ion-ripple-effect>
-      <ion-thumbnail slot="start">
-        <ion-img :src="item.avatar">
+      <ion-thumbnail  class='icon-container' slot="start">
+        <ion-img :src="'http://127.0.0.1:8000/images/'+item.image">
         </ion-img>
+        <div v-if="item.status=='offline'" class='status-circle-online'>
+  </div>
+  <div  v-if="item.status=='online'" class='status-circle-offline'>
+  </div>
       </ion-thumbnail>
-
+  
       <ion-label class="ion-text-wrap">
-        <p> {{ item.specialty }} </p>
+        <p> {{ item.specialite }} </p>
         <ion-text>
           <h3>
             <strong>
-              {{ item.name }}
+             Dr. {{ item.name }}
             </strong>
           </h3>
         </ion-text>
       </ion-label>
-
+    
       <ion-icon name="ellipsis-vertical-outline" size="small" slot="end"></ion-icon>
     </ion-item>
   </div>
@@ -111,7 +118,7 @@ import {
     initialSlide: 0,
     slidesPerView: 3.3,
   },
-
+  Doctors :[]as any,
   doctors:[
     {
       avatar: 'https://github.com/vagnersabadi/ionic-doctor-appointments-app/blob/main/src/assets/avatar.png?raw=true',
@@ -180,24 +187,27 @@ import {
         }
       },
       setup() {
-    const openModal = async () => {
+    const openModal = async (doctor) => {
       const modal = await modalController.create({
         component: ModaL, //Modal is name of the component to render inside ionic modal
+        componentProps: { 
+          doctor :doctor ,
+      }
       });
       return modal.present();
     };
 
     return { openModal };
   },
-   /*   computed: {
+   /* computed: {
     currentUser() {
       return this.$store.state.auth.user;
     }
-  },
+  },*/
       methods:{
     getDoctors(){
-      axios.get('http://localhost:3000/doctors').then((response)=>{
-         this.doctors=response.data
+      axios.get('http://localhost:8000/api/doctors').then((response)=>{
+         this.Doctors=response.data
         })
     },
        add(e:any){
@@ -206,9 +216,9 @@ import {
        }
       },
       mounted: function(){
-      if (this.currentUser == null) {
-      this.$router.push('/signin');
-    }
+    //  if (this.currentUser == null) {
+ //     this.$router.push('/signin');
+ //   }
    //  alert('hh)')
 //this.OneSignalInit()
 },
@@ -217,7 +227,7 @@ import {
 
         this.getDoctors();
         console.log(this.doctors)
-    }*/
+    }
          
        
       
@@ -227,7 +237,38 @@ import {
     });
   </script>
    <style scoped>
+.icon-container {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
 
+img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.status-circle-online {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #22ff00;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+.status-circle-offline {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(255, 0, 0);
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
 
 ion-header ion-toolbar {
 	overflow: hidden;

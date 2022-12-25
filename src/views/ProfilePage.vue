@@ -14,11 +14,16 @@
 
 <ion-content>
   <div id="profile-info">
-    <img id="profile-image"
-      :src="'https://github.com/vagnersabadi/ionic-doctor-appointments-app/blob/main/src/assets/avatar.png?raw=true'">
-    <span id="profile-description">Cardiologist</span>
-    <h3 id="profile-name">Dr. Alan C Braverman</h3>
-
+    <div id="profile-image" class='icon-container'>
+  <img :src="'http://127.0.0.1:8000/images/'+Doctor.image" />
+  <div v-if="Doctor.status=='offline'" class='status-circle-online'>
+  </div>
+  <div  v-if="Doctor.status=='online'" class='status-circle-offline'>
+  </div>
+</div>
+  
+    <span id="profile-description">{{Doctor.specialite}}</span>
+    <h3 id="profile-name">Dr. {{Doctor.name}}</h3>
 
     <div class="ion-text-center group-actions">
       <ion-button :style="{background:'#5260ff29'}">
@@ -43,8 +48,7 @@
       <div class="sub-title">
         <strong slot="start">About</strong>
       </div>
-      <p id="about-description">Dr. Alan C. Braverman is a cardiologist in Saint Louis, Missouri and is addiliadted with
-        multiple hospitals in the area. </p>
+      <p id="about-description">{{Doctor.description }}</p>
     </ion-label>
   </ion-item>
 
@@ -173,9 +177,72 @@ export default defineComponent({
     };
     return { closeModal };
   },
+  props: {
+		doctor: Object ,
+
+	},
+  data(){
+        return{
+   Doctor :{}
+    
+        }
+      },
+  mounted: function(){
+    //  if (this.currentUser == null) {
+ //     this.$router.push('/signin');
+ //   }
+   //  alert('hh)')
+//this.OneSignalInit()
+this.Doctor  = this.doctor
+console.log(this.Doctor.id)
+//console.log(`${this.doctor.id} `)
+
+},
 });
 </script>
 <style scoped>
+.icon-container {
+  width: 50px;
+  height: 50px;
+  position: relative;
+}
+
+img {
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.status-circle {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: grey;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+.status-circle-online {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #22ff00;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+.status-circle-offline {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(255, 0, 0);
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
 ion-header {
 	z-index: 0;
 }
@@ -209,7 +276,26 @@ ion-header {
 .title .sub-title {
 	margin-bottom: 12px;
 }
-
+.status-circle-online {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: #22ff00;
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
+.status-circle-offline {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  background-color: rgb(255, 0, 0);
+  border: 2px solid white;
+  bottom: 0;
+  right: 0;
+  position: absolute;
+}
 #about-description {
 	white-space: pre-line;
 	font-size: 16px;
