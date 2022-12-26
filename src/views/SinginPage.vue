@@ -4,7 +4,7 @@
 
         <ion-content :fullscreen="false">
             <div class="center">
-                <ion-input v-model="user.username"  placeholder="Email" class="custom"></ion-input>
+                <ion-input v-model="user.email"  placeholder="Email" class="custom"></ion-input>
                 <ion-input v-model="user.password" type="password" placeholder="Password" class="custom"></ion-input>
                 <ion-button class="butt" @click="handleLogin()" shape="round" color="#FCAFB7" size="large">Sign in</ion-button>
             </div>
@@ -58,11 +58,11 @@ export default defineComponent({
           this.$router.push("/list");
         },
         (error : any) => {
-          this.loading = false;
-          this.message =
+            this.loading = false;
+            this.message =
             (error.response &&
-              error.response.data &&
-              error.response.data.message) ||
+            error.response.data &&
+            error.response.data.message) ||
             error.message ||
             error.toString();
         }

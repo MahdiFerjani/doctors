@@ -50,19 +50,16 @@
         </span>
       </div>
     </ion-slide>
-
   </ion-slides>
-
   <div class="sub-title">
     <strong slot="start">Top Doctors</strong>
   </div>
-
   <div class="list-doctors">
     <ion-item :key="index"
         v-for="(item, index) in Doctors" lines="none" class="ion-activatable ripple-parent" @click="openModal(item)">
       <ion-ripple-effect></ion-ripple-effect>
       <ion-thumbnail  class='icon-container' slot="start">
-        <ion-img :src="'http://127.0.0.1:8000/images/'+item.image">
+        <ion-img :src="'http://127.0.0.1:8000/profile/'+item.image">
         </ion-img>
         <div v-if="item.status=='offline'" class='status-circle-online'>
   </div>

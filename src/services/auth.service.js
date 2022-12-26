@@ -2,10 +2,10 @@ import api from "./api";
 import TokenService from "./token.service";
 
 class AuthService {
-  login({ username, password }) {
+  login({ email,password }) {
     return api
-      .post("/auth/signin", {
-        username,
+      .post("/login", {
+        email,
         password
       })
       .then((response) => {
