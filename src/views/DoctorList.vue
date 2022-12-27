@@ -33,13 +33,13 @@
     </div>
     <swiper :slides-per-view="3">
       <swiper-slide :key="index" v-for="(item, index) in specialites" >
-        <div  @click="filtre(item.specialite)" class="card-categories ion-activatable ripple-parent" :style="{background:item.color}">
+        <div  @click="filtre(item,index)" class="card-categories ion-activatable ripple-parent" :style="{background:item.color}">
           <ion-ripple-effect></ion-ripple-effect>
           <ion-thumbnail>
           <img :src="'http://127.0.0.1:8000/icons/'+item.image" />
-        </ion-thumbnail>
+          </ion-thumbnail>
           <span>
-            <strong style="color: #000;">
+            <strong style="color: black;">
               {{item.specialite}}
             </strong>
           </span>
@@ -82,15 +82,13 @@
     
     <script lang="ts">
     
-  import {skullOutline, heartOutline ,searchOutline } from 'ionicons/icons';
+  import {searchOutline } from 'ionicons/icons';
   import {
        IonButton,
        IonContent,
        IonMenuToggle,
        modalController,
        IonThumbnail,
-       IonSlides,
-       IonSlide,
        IonChip,
        IonAvatar,
        IonText,
@@ -98,6 +96,7 @@
        IonInput,
        IonItem,
        IonRippleEffect,
+       IonIcon
 
       } from '@ionic/vue';
       import 'swiper/css';
@@ -110,6 +109,7 @@
         components: {
           IonButton,
         IonContent,
+        IonIcon,
         IonMenuToggle,
        IonThumbnail,
        Swiper,
@@ -132,12 +132,7 @@
     },
     Doctors :[]as any,
     array1 :[]as any,
-    specialites:[
-     { color:"",
-       image:"",
-       specialite:""
-  }
-    ],
+    specialites:[]as any,
 
           }
         },
@@ -178,10 +173,17 @@
           console.log(e)
           this.$router.push({ path:`/doctor/${e}`})
          },
-         filtre(e){
-          this.array1=this.Doctors
+         filtre(e,index){
+         var prevcolor=this.specialites[index].color
+         if(prevcolor!="#2C2B47"){
+         this.specialites.forEach((a)=>{
+          a.color=prevcolor;
+         })
+        }
+         this.specialites[index].color="#2C2B47"
+         this.array1=this.Doctors       
          var table=this.array1.filter((item) => {
-          return item.specialite == e
+         return item.specialite == e.specialite
          })
          this.array1=table
          
