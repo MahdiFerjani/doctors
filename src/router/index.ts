@@ -8,11 +8,17 @@ import DoctorDetail from '../views/DoctorDetail.vue'
 import signin from '../views/SinginPage.vue'
 import profile from '../views/ProfilePage.vue'
 import RendezVous from '../views/RendezVous.vue'
+import UpdateProfilePatient from '../views/UpdateProfilePatient.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     redirect: '/signup'
+  },
+  {
+    path: '/UpdateProfilePatient',
+    name: 'UpdateProfilePatient',
+    component: UpdateProfilePatient
   },
   {
     path: '/signup',

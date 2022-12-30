@@ -62,17 +62,36 @@
     </div>
         </ion-thumbnail>
     
-        <ion-label class="ion-text-wrap">
-          <p> {{ item.specialite }} </p>
-          <ion-text>
-            <h3>
-              <strong>
-               Dr. {{ item.name }}
-              </strong>
-            </h3>
-          </ion-text>
-        </ion-label>
-      
+        <ion-grid>
+  <ion-row>
+    <ion-col ><ion-label class="ion-text-wrap">
+        <p> {{ item.specialite }} </p>
+        <ion-text>
+          <h3>
+            <strong>
+             Dr. {{ item.name }}
+            </strong>
+          </h3>
+        </ion-text>
+      </ion-label></ion-col>
+   
+
+  </ion-row>
+  <ion-row>
+<ion-col>   
+       <star-rating v-bind:increment="0.5"
+             v-bind:max-rating="5"
+             :rating="3.3"
+             inactive-color="white"
+             active-color="#ffd500"
+             v-bind:star-size="16">
+</star-rating>
+
+
+
+    </ion-col>
+  </ion-row>
+</ion-grid>
         <ion-icon name="ellipsis-vertical-outline" size="small" slot="end"></ion-icon>
       </ion-item>
     </div>
@@ -81,7 +100,7 @@
     </template>
     
     <script lang="ts">
-    
+
   import {searchOutline } from 'ionicons/icons';
   import {
        IonButton,
@@ -96,7 +115,7 @@
        IonInput,
        IonItem,
        IonRippleEffect,
-       IonIcon
+       IonIcon 
 
       } from '@ionic/vue';
       import 'swiper/css';
@@ -105,6 +124,8 @@
       import axios from  "axios";
       import ModaL from "./ProfilePage.vue"
       import { defineComponent } from 'vue';
+      import StarRating from 'vue-star-rating'
+
       export default defineComponent({
         components: {
           IonButton,
@@ -121,7 +142,7 @@
        IonInput,
        IonItem,
        IonRippleEffect,
-          
+     //  StarRating
         },
         data(){
           return{

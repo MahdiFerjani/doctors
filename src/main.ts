@@ -31,6 +31,9 @@ const app = createApp(App)
 
   .use(VueGoogleMaps, {
     load: {
+      version :'weekly',
+      // libraries: "visualization"
+      libraries: "places",
         key: 'AIzaSyBw834lTlc-gq-XDeBV8jSk3cleQl0i_j0',
         // language: 'de',
     },

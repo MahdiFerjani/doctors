@@ -16,9 +16,9 @@
   <div id="profile-info">
     <div id="profile-image" class='icon-container'>
   <img :src="'http://127.0.0.1:8000/images/'+Doctor.image" />
-  <div v-if="Doctor.status=='offline'" class='status-circle-online'>
+  <div v-if="Doctor.status=='online'" class='status-circle-online'>
   </div>
-  <div  v-if="Doctor.status=='online'" class='status-circle-offline'>
+  <div  v-if="Doctor.status=='offline'" class='status-circle-offline'>
   </div>
 </div>
   
@@ -51,7 +51,31 @@
       <p id="about-description">{{Doctor.description }}</p>
     </ion-label>
   </ion-item>
-
+  <ion-item lines="none" class="title">
+    <ion-label>
+      <div class="sub-title">
+        <strong slot="start">Localisation</strong>
+      </div>
+      <GMapMap
+      :center="center"
+      :zoom="7"
+      map-type-id="terrain"
+      style="width: 100vw; height: 900px"
+  >
+  
+  <GMapMarker
+  :key="index"
+      v-for="(m, index) in markers"
+      :position="m.position"
+      :clickable="true"
+      :draggable="true"
+      @click="center = m.position"
+    />
+    
+  </GMapMap>
+  </ion-label>
+  </ion-item>
+  
   <ion-item lines="none" class="title schedules">
     <ion-label>
       <div class="sub-title">
@@ -183,11 +207,55 @@ export default defineComponent({
 	},
   data(){
         return{
-   Doctor :{}
-    
+   Doctor :{},
+   center: {lat: 51.093048, lng: 6.842120},
+    markers: [
+        {
+          id: 'dfsldjl3r',
+          position: {
+            lat: 51.093048, lng: 6.842120
+          },
+        }
+      ]
         }
       },
+
+      methods: {
+
+    setLocationLatLng () {
+      //  google.maps.LatLng({lat: 52.2985593, lng: 104.2455337})
+        navigator.geolocation.getCurrentPosition(geolocation => {
+          this.center = {
+            lat: geolocation.coords.latitude,
+            lng: geolocation.coords.longitude
+          };
+       
+
+          this.drawMarkers()
+
+        });
+     //   alert("3"+this.center.lat)
+
+    },
+
+    drawMarkers(){
+      this.markers = [
+        {
+            id: 'dfsldjl3r',
+            position: this.center
+        },
+      ]
+    },
+
+    clearMap(){
+      this.markers = [];
+    },
+
+    },
   mounted: function(){
+    
+    this.setLocationLatLng();
+
     //  if (this.currentUser == null) {
  //     this.$router.push('/signin');
  //   }
