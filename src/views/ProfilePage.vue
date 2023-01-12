@@ -15,7 +15,7 @@
 <ion-content>
   <div id="profile-info">
     <div id="profile-image" class='icon-container'>
-  <img :src="'http://127.0.0.1:8000/images/'+Doctor.image" />
+  <img :src="'http://127.0.0.1:8000/profile/'+Doctor.image" />
   <div v-if="Doctor.status=='online'" class='status-circle-online'>
   </div>
   <div  v-if="Doctor.status=='offline'" class='status-circle-offline'>
@@ -27,16 +27,16 @@
 
     <div class="ion-text-center group-actions">
       <ion-button :style="{background:'#5260ff29'}">
-        <ion-icon slot="icon-only" name="chatbox" color="tertiary"></ion-icon>
+        <ion-icon slot="icon-only" :name=chatbox color="tertiary"></ion-icon>
       </ion-button>
       <ion-button :style="{background:'#ffc40929'}"> 
-        <ion-icon slot="icon-only" name="call" color="warning"></ion-icon>
+        <ion-icon slot="icon-only" :name=call color="warning"></ion-icon>
       </ion-button>
       <ion-button :style="{background:'#BEC0C629'}">
-        <ion-icon slot="icon-only" name="videocam" color="medium"></ion-icon>
+        <ion-icon slot="icon-only" :name=videocam color="medium"></ion-icon>
       </ion-button>
       <ion-button :style="{background:'#eb445a29'}">
-        <ion-icon slot="icon-only" name="navigate" color="danger"></ion-icon>
+        <ion-icon slot="icon-only" :name=navigate color="danger"></ion-icon>
       </ion-button>
 
     </div>
@@ -50,32 +50,7 @@
       </div>
       <p id="about-description">{{Doctor.description }}</p>
     </ion-label>
-  </ion-item>
-  <ion-item lines="none" class="title">
-    <ion-label>
-      <div class="sub-title">
-        <strong slot="start">Localisation</strong>
-      </div>
-      <GMapMap
-      :center="center"
-      :zoom="7"
-      map-type-id="terrain"
-      style="width: 100vw; height: 900px"
-  >
-  
-  <GMapMarker
-  :key="index"
-      v-for="(m, index) in markers"
-      :position="m.position"
-      :clickable="true"
-      :draggable="true"
-      @click="center = m.position"
-    />
-    
-  </GMapMap>
-  </ion-label>
-  </ion-item>
-  
+  </ion-item>  
   <ion-item lines="none" class="title schedules">
     <ion-label>
       <div class="sub-title">
@@ -84,11 +59,11 @@
     </ion-label>
 
     <ion-chip class="chip-months">
-      <ion-icon name="chevron-back"></ion-icon>
+      <ion-icon  @click="getMonate('prev')" :name="chevronBack"></ion-icon>
       <ion-label>
-        <strong>January</strong>
+        <strong>{{ this.b }}</strong>
       </ion-label>
-      <ion-icon name="chevron-forward"></ion-icon>
+      <ion-icon  @click="getMonate('next')" :name="chevronForward"></ion-icon>
     </ion-chip>
   </ion-item>
 
@@ -96,82 +71,36 @@
 
     <ion-row>
 
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="tertiary">
+      <ion-col :key="index" v-for="(item, index) in Days" size="1.68">
+        <div v-if="item.name=='sun'">
+        <ion-badge class="group-week-day" color="warning">
 
           <div class="week">
-            Su
+
+            {{ item.day }}
           </div>
           <div class="day">
-            <ion-text color="light">
-              10
+            <ion-text color="tertiary">
+              {{ item.name }}
             </ion-text>
           </div>
         </ion-badge>
-      </ion-col>
+      </div>
+      <div v-else>
+        <ion-badge @click="select(item.day)"  class="group-week-day" color="light">
 
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
           <div class="week">
-            Mo
+
+            {{ item.day }}
           </div>
           <div class="day">
-            11
-          </div>
-        </ion-badge>
-      </ion-col>
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
-          <div class="week">
-            Tu
-          </div>
-          <div class="day">
-            12
-          </div>
-        </ion-badge>
-      </ion-col>
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
-          <div class="week">
-            We
-          </div>
-          <div class="day">
-            13
-          </div>
-        </ion-badge>
-      </ion-col>
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
-          <div class="week">
-            Th
-          </div>
-          <div class="day">
-            14
-          </div>
-        </ion-badge>
-      </ion-col>
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
-          <div class="week">
-            Fri
-          </div>
-          <div class="day">
-            15
-          </div>
-        </ion-badge>
-      </ion-col>
-      <ion-col size="1.68">
-        <ion-badge class="group-week-day" color="light">
-          <div class="week">
-            Sa
-          </div>
-          <div class="day">
-            <ion-text>
-              16
+            <ion-text color="tertiary">
+              {{ item.name }}
             </ion-text>
           </div>
         </ion-badge>
-      </ion-col>
+      </div>
+      </ion-col>     
     </ion-row>
   </ion-grid>
 
@@ -188,9 +117,10 @@
 </ion-content>
 </template>
 
-<script>
+<script lang="ts">
 import { IonContent, IonHeader, IonToolbar,modalController } from "@ionic/vue";
 import { defineComponent } from "vue";
+import {chevronBack,chevronForward,time,videocam,call,navigate,chatbox}  from 'ionicons/icons';
 
 export default defineComponent({
   name: "ModaL",
@@ -206,10 +136,23 @@ export default defineComponent({
 
 	},
   data(){
-        return{
-   Doctor :{},
+    
+    const d = new Date();
+    let month = d.getMonth()+1;
+    return{
+    chevronBack:chevronBack,
+    chevronForward:chevronForward,
+    time:time,
+    videocam:videocam,
+    call:call,
+    navigate:navigate,
+    chatbox:chatbox,
+    currentMonth: month,
+    b:"",  
+   Days :[] as any,  
+   Doctor :{} as any ,
    center: {lat: 51.093048, lng: 6.842120},
-    markers: [
+  markers: [
         {
           id: 'dfsldjl3r',
           position: {
@@ -222,8 +165,65 @@ export default defineComponent({
 
       methods: {
 
+    getMonate(e){
+      if(e=="prev"){
+      this.currentMonth--
+       if(this.currentMonth<1)
+       this.currentMonth=12
+      }
+      if(e=="next"){
+      this.currentMonth++
+      if(this.currentMonth>12)
+       this.currentMonth=1
+      }
+    
+      console.log(this.currentMonth)
+      switch(this.currentMonth){
+        case 1: this.b = "January";
+            break;
+        case 2: this.b = "February";
+            break;
+        case 3: this.b = "March";
+            break;
+        case 4: this.b = "April";
+            break;
+        case 5: this.b = "May";
+            break;
+        case 6: this.b = "June"; 
+            break;
+        case 7: this.b = "July";
+            break;
+        case 8: this.b = "August";
+            break;
+        case 9: this.b = "September";
+            break;
+        case 10: this.b = "October";
+            break;
+        case 11: this.b = "November";
+            break;
+        case 12: this.b = "December";
+            break;
+        }
+        this.Days=this.getDays(this.currentMonth);
+    }
+    , 
+    getDays(month) {
+  var monthIndex = month - 1; // 0..11 instead of 1..12
+  var names = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
+  var d=new Date();
+  var year=d.getFullYear();
+  var date = new Date(year, monthIndex, 1);
+  var result=[] as any;
+  while (date.getMonth() == monthIndex) {
+   let a={day:date.getDate(),name:names[date.getDay()]}
+    result.push(a);
+    date.setDate(date.getDate() + 1);
+  }
+  return result;
+}
+,
     setLocationLatLng () {
-      //  google.maps.LatLng({lat: 52.2985593, lng: 104.2455337})
+     
         navigator.geolocation.getCurrentPosition(geolocation => {
           this.center = {
             lat: geolocation.coords.latitude,
@@ -251,10 +251,17 @@ export default defineComponent({
       this.markers = [];
     },
 
+    select(e:any){
+      let d= new Date();
+      let d2=new Date(d.getFullYear(),this.currentMonth-1,e)
+      console.log(d2);
+    }
+
     },
   mounted: function(){
-    
+    this.getMonate("");
     this.setLocationLatLng();
+    this.Days=this.getDays(this.currentMonth);
 
     //  if (this.currentUser == null) {
  //     this.$router.push('/signin');

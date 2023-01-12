@@ -31,7 +31,7 @@
     <div class="sub-title">
       <strong slot="start">Categories</strong>
     </div>
-    <swiper :slides-per-view="3">
+    <swiper :slides-per-view="4">
       <swiper-slide :key="index" v-for="(item, index) in specialites" >
         <div  @click="filtre(item,index)" class="card-categories ion-activatable ripple-parent" :style="{background:item.color}">
           <ion-ripple-effect></ion-ripple-effect>
@@ -142,11 +142,11 @@
        IonInput,
        IonItem,
        IonRippleEffect,
-     //  StarRating
+       StarRating
         },
         data(){
           return{
-            searchOutline:searchOutline,   
+      searchOutline:searchOutline,   
       slideOpts : {
       initialSlide: 0,
       slidesPerView: 3.3,
