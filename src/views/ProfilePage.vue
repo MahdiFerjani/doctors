@@ -182,7 +182,7 @@ export default defineComponent({
       selectedDay :'' ,
       start: "" as any ,
     end: "" as any ,
-                    center: { lat: 37.7749, lng: -122.4194 },
+                    center: { lat: 0, lng: 0 },
    
           markers: [
             {
@@ -290,16 +290,26 @@ getDoctorsDays(id){
 })
 }
 ,
-    setLocationLatLng () {
+   async setLocationLatLng () {
      
         navigator.geolocation.getCurrentPosition(geolocation => {
-          this.center = {
-            lat: geolocation.coords.latitude,
-            lng: geolocation.coords.longitude
-          };
-       
+          this.center.lat= geolocation.coords.latitude,
+          this.center.lng= geolocation.coords.longitude
 
-          this.drawMarkers()
+       console.log( "this.center.lat")
+       setTimeout(()=>
+       {     
+        decode.decode(this.center.lat, this.center.lng,(result1 :any )=>{         
+        
+       decode.decode(this.Doctor.latitude, this.Doctor.longitude,(result2 :any )=>{         
+        this.start = result1,
+        this.end = result2 
+})
+    }) 
+       }
+       , 
+       1000)
+       //   this.drawMarkers()
 
         });
      //   alert("3"+this.center.lat)
@@ -329,7 +339,7 @@ getDoctorsDays(id){
     },
   mounted: function(){
     this.getMonate("");
-   
+   this.setLocationLatLng()
     this.getDoctorsDays(this.doctor.id)
     console.log(this.DoctorDays)
     this.Days=this.getDays(this.currentMonth);
@@ -339,16 +349,7 @@ getDoctorsDays(id){
 this.Doctor  = this.doctor
 console.log(this.Doctor.id)
 
-setTimeout(()=>
-       {
-        decode.decode(this.center.lat, this.center.lng,(result :any )=>{         
-        
-             this.start = result,
-       this.end = 'okland' 
-    }) 
-       }
-       , 
-       1000)
+
 },
 });
 </script>

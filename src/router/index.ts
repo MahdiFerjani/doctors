@@ -10,6 +10,8 @@ import profile from '../views/ProfilePage.vue'
 import RendezVous from '../views/RendezVous.vue'
 import UpdateProfilePatient from '../views/UpdateProfilePatient.vue'
 import googleMap from '../views/googleMap.vue'
+import uidesign from '../views/uidesignPage.vue'
+
 
 
 const routes: Array<RouteRecordRaw> = [
@@ -26,6 +28,11 @@ const routes: Array<RouteRecordRaw> = [
     path: '/map',
     name: 'googleMap',
     component: googleMap
+  },
+  {
+    path: '/uidesign',
+    name: 'uidesign',
+    component: uidesign
   },
   {
     path: '/signup',
