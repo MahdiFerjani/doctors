@@ -103,7 +103,7 @@
         </ion-badge>
       </div>
       <div v-else>
-        <ion-badge @click="select(item.day)"  class="group-week-day" color="light">
+        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'light'">
 
           <div class="week">
 
@@ -155,7 +155,7 @@
 import { IonIcon } from '@ionic/vue';
 import { IonContent, IonHeader, IonToolbar,modalController,IonButton,IonButtons,IonItem,IonChip} from "@ionic/vue";
 import { defineComponent } from "vue";
-
+import axios from  "axios";
 import {chevronBack,chevronForward,time,videocam,call,navigate,chatbox,camera,location}  from 'ionicons/icons';
 import DirectionsRenderer from '../js/DirectionsRenderer.js'
 import * as  decode from '../js/decode.js'
@@ -179,6 +179,7 @@ export default defineComponent({
     const d = new Date();
     let month = d.getMonth()+1;
     return{
+      selectedDay :'' ,
       start: "" as any ,
     end: "" as any ,
                     center: { lat: 37.7749, lng: -122.4194 },
@@ -203,9 +204,10 @@ export default defineComponent({
     chatbox:chatbox,
     currentMonth: month,
     b:"",  
-   Days :[] as any,  
-   Doctor :{} as any ,
-   isOpen: false,
+    Days :[] as any,  
+    Doctor :{} as any ,
+    isOpen: false,
+    DoctorDays:[] as any
 
         }
       },
@@ -220,24 +222,23 @@ export default defineComponent({
            return { query: this.start };
          },
            },
-      methods: {
+        methods: {
         setOpen(isOpen: boolean) {
         this.isOpen = isOpen;
+        
       },
-    getMonate(e){
-      if(e=="prev"){
-      this.currentMonth--
-       if(this.currentMonth<1)
-       this.currentMonth=12
-      }
-      if(e=="next"){
-      this.currentMonth++
-      if(this.currentMonth>12)
+       getMonate(e){
+       if(e=="prev"){
+        this.currentMonth--
+        if(this.currentMonth<1)
+        this.currentMonth=12
+          }
+        if(e=="next"){
+        this.currentMonth++
+        if(this.currentMonth>12)
        this.currentMonth=1
-      }
-    
-      console.log(this.currentMonth)
-      switch(this.currentMonth){
+        }
+        switch(this.currentMonth){
         case 1: this.b = "January";
             break;
         case 2: this.b = "February";
@@ -266,7 +267,7 @@ export default defineComponent({
         this.Days=this.getDays(this.currentMonth);
     }
     , 
-    getDays(month) {
+  getDays(month) {
   var monthIndex = month - 1; // 0..11 instead of 1..12
   var names = [ 'sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat' ];
   var d=new Date();
@@ -274,11 +275,19 @@ export default defineComponent({
   var date = new Date(year, monthIndex, 1);
   var result=[] as any;
   while (date.getMonth() == monthIndex) {
-   let a={day:date.getDate(),name:names[date.getDay()]}
+  var date2=new Date( year, month-1, date.getDate() )
+  var formattedDate = date2.toISOString().slice(0, 10);
+   let a={day:date.getDate(),name:names[date.getDay()],date:formattedDate}
     result.push(a);
     date.setDate(date.getDate() + 1);
   }
   return result;
+},
+getDoctorsDays(id){
+  axios.get(`http://127.0.0.1:8000/api/doctor/${id}`).then((response)=>{
+  this.DoctorDays=response.data
+  console.log(this.DoctorDays)
+})
 }
 ,
     setLocationLatLng () {
@@ -314,26 +323,26 @@ export default defineComponent({
       let d= new Date();
       let d2=new Date(d.getFullYear(),this.currentMonth-1,e)
       console.log(d2);
+      this.selectedDay=e
     }
 
     },
   mounted: function(){
     this.getMonate("");
-   // this.setLocationLatLng();
+   
+    this.getDoctorsDays(this.doctor.id)
+    console.log(this.DoctorDays)
     this.Days=this.getDays(this.currentMonth);
+    console.log(this.Days);
 
-    //  if (this.currentUser == null) {
- //     this.$router.push('/signin');
- //   }
-   //  alert('hh)')
-//this.OneSignalInit()
+
 this.Doctor  = this.doctor
 console.log(this.Doctor.id)
-//console.log(`${this.doctor.id} `)
+
 setTimeout(()=>
        {
         decode.decode(this.center.lat, this.center.lng,(result :any )=>{         
-         //    alert(result)
+        
              this.start = result,
        this.end = 'okland' 
     }) 
