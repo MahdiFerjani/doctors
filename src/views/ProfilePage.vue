@@ -85,40 +85,36 @@
 
   <ion-grid>
 
-    <ion-row>
+<ion-row>
 
-      <ion-col :key="index" v-for="(item, index) in Days" size="1.68">
-        <div v-if="item.name=='sun'">
-        <ion-badge class="group-week-day" color="warning">
-
-          <div class="week">
-
-            {{ item.day }}
-          </div>
-          <div class="day">
-            <ion-text color="tertiary">
-              {{ item.name }}
-            </ion-text>
-          </div>
-        </ion-badge>
+  <ion-col :key="index" v-for="(item, index) in Days" size="1.68"> 
+    <div v-if="item.name=='sun'|| !DoctorDays.find(i => i.date === item.date)">
+    <ion-badge class="group-week-day" color="light">
+      <div class="week">
+        {{ item.day }}
       </div>
-      <div v-else>
-        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'light'">
-
-          <div class="week">
-
-            {{ item.day }}
-          </div>
-          <div class="day">
-            <ion-text color="tertiary">
-              {{ item.name }}
-            </ion-text>
-          </div>
-        </ion-badge>
+      <div class="day">
+        <ion-text color="tertiary">
+          {{ item.name }}
+        </ion-text>
       </div>
-      </ion-col>     
-    </ion-row>
-  </ion-grid>
+    </ion-badge>
+  </div>
+  <div v-else>
+    <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'warning'">
+      <div class="week">
+        {{ item.day }}
+      </div>
+      <div class="day">
+        <ion-text color="success">
+          {{ item.name }}
+        </ion-text>
+      </div>
+    </ion-badge>
+  </div>
+  </ion-col>     
+</ion-row>
+</ion-grid>
 
   <div class="ion-text-center btn-time-appointment">
 
