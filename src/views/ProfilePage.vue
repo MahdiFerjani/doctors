@@ -81,7 +81,7 @@
 <ion-row>
 
       <ion-col :key="index" v-for="(item, index) in Days" size="1.68">
-        <div v-if="item.name=='sun'">
+        <div v-if="item.name=='sun'|| !DoctorDays.find(i => i.date === item.date)">
         <ion-badge class="group-week-day" color="warning">
 
           <div class="week">
@@ -103,7 +103,7 @@
             {{ item.day }}
           </div>
           <div class="day">
-            <ion-text color="tertiary">
+            <ion-text color="success">
               {{ item.name }}
             </ion-text>
           </div>
@@ -114,9 +114,14 @@
   </ion-grid>
 
   <div class="ion-text-center btn-time-appointment">
-    <ion-button color="tertiary" class="appointment">
-      Appointment
-    </ion-button>
+
+    <ion-button v-on:click="showToaster(theDay)" color="tertiary" class="appointment">
+  Appointment
+</ion-button>
+<ion-toast v-if="showToast" :message="'You need to pick a date first'" :duration="2000"></ion-toast>
+
+
+   
   </div>
 
 </ion-content>
@@ -142,45 +147,61 @@
 
 <script lang="ts">
 import { IonIcon } from '@ionic/vue';
-import { IonContent, IonHeader, IonToolbar,modalController,IonButton,IonButtons,IonItem,IonChip} from "@ionic/vue";
+import {IonToast, IonContent, IonHeader, IonToolbar,modalController,IonButton,IonButtons,IonItem,IonChip} from "@ionic/vue";
 import { defineComponent } from "vue";
 import axios from  "axios";
+import BooKing from './BooKing.vue'
 import {chevronBack,chevronForward,time,videocam,call,navigate,chatbox,camera,location}  from 'ionicons/icons';
 import DirectionsRenderer from '../js/DirectionsRenderer.js'
 import * as  decode from '../js/decode.js'
 export default defineComponent({
   name: "ModaL",
-  components: { IonContent, IonHeader,  IonToolbar ,IonIcon,IonButton,IonButtons, IonItem,IonChip, DirectionsRenderer
+  components: { IonToast,IonContent, IonHeader,  IonToolbar ,IonIcon,IonButton,IonButtons, IonItem,IonChip, DirectionsRenderer
 },
   setup() {
     const closeModal = () => {
       modalController.dismiss();
     };
-    return { closeModal };
-  },
+  
+
+    const openModal = async (day,doctor) => {
+        const modal = await modalController.create({
+          component: BooKing, 
+          componentProps: { 
+          day:day,
+          doctor:doctor
+          
+          
+        }
+        });
+        return modal.present();
+    }
+    return { openModal ,closeModal  };
+},
   props: {
 		doctor: Object ,
+},
 
-	},
-  
   data(){
     
     const d = new Date();
     let month = d.getMonth()+1;
     return{
+      theDay:null,
+      showToast: false,
       selectedDay :'' ,
       start: "" as any ,
-    end: "" as any ,
-                    center: { lat: 37.7749, lng: -122.4194 },
+      end: "" as any ,
+      center: { lat: 37.7749, lng: -122.4194 },
    
           markers: [
             {
-              id: "" ,
+            id: "" ,
             position: {
             lat: 37.7749, lng: 6.842120
             },
             }
-            , // Along list of clusters
+            , 
         ],
     compassOutline:location ,
     chevronBack:chevronBack,
@@ -297,10 +318,10 @@ getDoctorsDays(id){
        }
        , 
        1000)
-       //   this.drawMarkers()
+       
 
         });
-     //   alert("3"+this.center.lat)
+  
 
     },
 
@@ -320,9 +341,18 @@ getDoctorsDays(id){
     select(e:any){
       let d= new Date();
       let d2=new Date(d.getFullYear(),this.currentMonth-1,e)
-      console.log(d2);
       this.selectedDay=e
+      var formattedDate = d2.toISOString().slice(0, 10);
+      this.theDay=this.DoctorDays.find(i => i.date == formattedDate)
+    },
+    showToaster(day) {
+    if(!day) {
+      this.showToast = true;
+    }else{
+     this.openModal(day,this.doctor)
+    
     }
+  }
 
     },
   mounted: function(){
@@ -335,7 +365,7 @@ getDoctorsDays(id){
 
 
 this.Doctor  = this.doctor
-console.log(this.Doctor.id)
+
 
 
 },

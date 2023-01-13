@@ -128,10 +128,10 @@
 
       export default defineComponent({
         components: {
-          IonButton,
-        IonContent,
-        IonIcon,
-        IonMenuToggle,
+       IonButton,
+       IonContent,
+       IonIcon,
+       IonMenuToggle,
        IonThumbnail,
        Swiper,
        SwiperSlide,
@@ -157,7 +157,7 @@
 
           }
         },
-        setup() {
+      setup() {
       const openModal = async (doctor) => {
         const modal = await modalController.create({
           component: ModaL, 
