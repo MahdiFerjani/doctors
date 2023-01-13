@@ -78,12 +78,14 @@
 
   <ion-grid>
 
-    <ion-row>
+<ion-row>
 
-      <ion-col :key="index" v-for="(item, index) in Days" size="1.68"> 
-        <div v-if="item.name=='sun'|| !DoctorDays.find(i => i.date === item.date)">
-        <ion-badge class="group-week-day" color="light">
+      <ion-col :key="index" v-for="(item, index) in Days" size="1.68">
+        <div v-if="item.name=='sun'">
+        <ion-badge class="group-week-day" color="warning">
+
           <div class="week">
+
             {{ item.day }}
           </div>
           <div class="day">
@@ -94,12 +96,14 @@
         </ion-badge>
       </div>
       <div v-else>
-        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'warning'">
+        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'light'">
+
           <div class="week">
+
             {{ item.day }}
           </div>
           <div class="day">
-            <ion-text color="success">
+            <ion-text color="tertiary">
               {{ item.name }}
             </ion-text>
           </div>
@@ -166,8 +170,9 @@ export default defineComponent({
     return{
       selectedDay :'' ,
       start: "" as any ,
-      end: "" as any ,
-      center: { lat: 37.7749, lng: -122.4194 },
+    end: "" as any ,
+                    center: { lat: 37.7749, lng: -122.4194 },
+   
           markers: [
             {
               id: "" ,
@@ -273,16 +278,26 @@ getDoctorsDays(id){
 })
 }
 ,
-    setLocationLatLng () {
+   async setLocationLatLng () {
      
         navigator.geolocation.getCurrentPosition(geolocation => {
-          this.center = {
-            lat: geolocation.coords.latitude,
-            lng: geolocation.coords.longitude
-          };
-       
+          this.center.lat= geolocation.coords.latitude,
+          this.center.lng= geolocation.coords.longitude
 
-          this.drawMarkers()
+       console.log( "this.center.lat")
+       setTimeout(()=>
+       {     
+        decode.decode(this.center.lat, this.center.lng,(result1 :any )=>{         
+        
+       decode.decode(this.Doctor.latitude, this.Doctor.longitude,(result2 :any )=>{         
+        this.start = result1,
+        this.end = result2 
+})
+    }) 
+       }
+       , 
+       1000)
+       //   this.drawMarkers()
 
         });
      //   alert("3"+this.center.lat)
@@ -312,7 +327,7 @@ getDoctorsDays(id){
     },
   mounted: function(){
     this.getMonate("");
-   
+   this.setLocationLatLng()
     this.getDoctorsDays(this.doctor.id)
     console.log(this.DoctorDays)
     this.Days=this.getDays(this.currentMonth);
@@ -322,16 +337,7 @@ getDoctorsDays(id){
 this.Doctor  = this.doctor
 console.log(this.Doctor.id)
 
-setTimeout(()=>
-       {
-        decode.decode(this.center.lat, this.center.lng,(result :any )=>{         
-        
-             this.start = result,
-       this.end = 'okland' 
-    }) 
-       }
-       , 
-       1000)
+
 },
 });
 </script>
