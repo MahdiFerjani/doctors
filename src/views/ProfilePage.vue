@@ -55,14 +55,7 @@
     </ion-label>
    
   </ion-item>  
-  <ion-item>
-    <ion-label>
-      <div class="sub-title">
-        <strong slot="start">Localisation</strong>
-      </div>
-    
-    </ion-label>
-  </ion-item>
+ 
   <ion-item lines="none" class="title schedules">
     <ion-label>
       <div class="sub-title">
@@ -87,12 +80,10 @@
 
     <ion-row>
 
-      <ion-col :key="index" v-for="(item, index) in Days" size="1.68">
-        <div v-if="item.name=='sun'">
-        <ion-badge class="group-week-day" color="warning">
-
+      <ion-col :key="index" v-for="(item, index) in Days" size="1.68"> 
+        <div v-if="item.name=='sun'|| !DoctorDays.find(i => i.date === item.date)">
+        <ion-badge class="group-week-day" color="light">
           <div class="week">
-
             {{ item.day }}
           </div>
           <div class="day">
@@ -103,14 +94,12 @@
         </ion-badge>
       </div>
       <div v-else>
-        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'light'">
-
+        <ion-badge :key="item.day" @click="select(item.day)"  class="group-week-day" :color="item.day == selectedDay ? 'primary' : 'warning'">
           <div class="week">
-
             {{ item.day }}
           </div>
           <div class="day">
-            <ion-text color="tertiary">
+            <ion-text color="success">
               {{ item.name }}
             </ion-text>
           </div>
@@ -121,10 +110,6 @@
   </ion-grid>
 
   <div class="ion-text-center btn-time-appointment">
-
-    <ion-button class="time">
-      <ion-icon name="time" color="secondary"></ion-icon>
-    </ion-button>
     <ion-button color="tertiary" class="appointment">
       Appointment
     </ion-button>
@@ -181,19 +166,18 @@ export default defineComponent({
     return{
       selectedDay :'' ,
       start: "" as any ,
-    end: "" as any ,
-                    center: { lat: 37.7749, lng: -122.4194 },
-   
+      end: "" as any ,
+      center: { lat: 37.7749, lng: -122.4194 },
           markers: [
             {
               id: "" ,
             position: {
-                lat: 37.7749, lng: 6.842120
+            lat: 37.7749, lng: 6.842120
             },
             }
             , // Along list of clusters
         ],
-        compassOutline:location ,
+    compassOutline:location ,
     chevronBack:chevronBack,
     camera:camera ,
     chevronForward:chevronForward,
@@ -208,7 +192,6 @@ export default defineComponent({
     Doctor :{} as any ,
     isOpen: false,
     DoctorDays:[] as any
-
         }
       },
       computed: {
@@ -508,7 +491,7 @@ ion-header {
 	height: 80px;
 	font-size: 18px;
 	font-weight: bold;
-	margin: 25px;
+
 }
 
 .btn-time-appointment .time {
