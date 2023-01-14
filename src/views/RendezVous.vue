@@ -21,6 +21,7 @@
     <ion-label><b>Date</b></ion-label>
     </ion-item>
     <ion-item v-for="appointment in appointments" :key="appointment.id">
+
     <ion-label>{{appointment.doctor_name}}</ion-label>
     <ion-label>{{appointment.time}}</ion-label>
     <ion-label>{{appointment.date}}</ion-label>
