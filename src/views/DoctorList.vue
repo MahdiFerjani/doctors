@@ -81,7 +81,7 @@
 <ion-col>   
        <star-rating v-bind:increment="0.5"
              v-bind:max-rating="5"
-             :rating="3.3"
+             :rating="(item.totalreview/item.numeroOfreview)"
              inactive-color="white"
              active-color="#ffd500"
              v-bind:star-size="16">
