@@ -15,40 +15,35 @@
 </ion-toolbar></ion-header>
 <ion-content>
   <ion-list>
-  <ion-item>
-    <ion-label>Rendez vous docteur 1</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Rendez vous docteur 2</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Rendez vous docteur 3</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Pac-Man</ion-label>
-  </ion-item>
-  <ion-item>
-    <ion-label>Super Mario World</ion-label>
-  </ion-item>
-</ion-list>
-<h1> 
-</h1>
-<h1>
-  <p v-for="(item, index) in starsnb2" :key="index" style="display: inline-block;">
+    <ion-item >
+    <ion-label><b>Dr</b></ion-label>
+    <ion-label><b>Time</b></ion-label>
+    <ion-label><b>Date</b></ion-label>
+    </ion-item>
+    <ion-item v-for="appointment in appointments" :key="appointment.id">
+    <ion-label>{{appointment.doctor_name}}</ion-label>
+    <ion-label>{{appointment.time}}</ion-label>
+    <ion-label>{{appointment.date}}</ion-label>
+    <br>
+    <p v-for="(item, index) in starsnb2" :key="index" style="display: inline-block;">
   <ion-icon :icon="starSharp" style="color: yellow;" @click='Review(0,index+1)' ></ion-icon>
   </p>
    <p v-for="(item, index) in starsnb" :key="index" style="display: inline-block;">
   <ion-icon :icon="star" @click='Review(index+1,0)' ></ion-icon>
   </p>
+    </ion-item>
+  
+  
  
- </h1>
+ 
+</ion-list>
+
 </ion-content>
 </ion-page>
 </template>
 <script lang="ts">
 import axios from  "axios";
 import {starOutline,starSharp } from 'ionicons/icons';
-
 import { defineComponent } from 'vue';
 import {
     IonContent,
@@ -67,6 +62,7 @@ export default defineComponent({
     },
     data(){
         return{
+          appointments: [] as any,
           starsnb :[] ,
           starsnb2 :[] ,
           //heartOutline:heartOutline,
@@ -80,6 +76,13 @@ export default defineComponent({
     }
   },*/
       methods:{
+    getbooking() {
+
+    axios.get(`http://127.0.0.1:8000/api/mybookings/${this.$store.state.auth.user.id}`).then(response => {
+      this.appointments = response.data
+    });
+  },
+
         Review (nb :any,nb2 :any)
 {
  
@@ -137,8 +140,10 @@ console.log("no review")
 }
       },
       mounted: function(){
+        this.getbooking()
         this.starsnb.length  =5
         this.starsnb2.length  =0
+        
         
     //  if (this.currentUser == null) {
  //     this.$router.push('/signin');
@@ -146,6 +151,7 @@ console.log("no review")
    //  alert('hh)')
 //this.OneSignalInit()
 },
+
        
 
        

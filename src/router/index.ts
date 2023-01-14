@@ -17,7 +17,7 @@ import uidesign from '../views/uidesignPage.vue'
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
-    redirect: '/signup'
+    redirect: '/home'
   },
   {
     path: '/UpdateProfilePatient',
