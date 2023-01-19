@@ -64,11 +64,22 @@ Deconexion          </ion-label>
   return {
     exitOutline: exitOutline ,
     title :'Page 1' as any ,
+    nameuser :'',
     appPages : [
  
       {
         title: 'Mes Rendez Vous',
         url: '/rendezvous',
+        icon: contractOutline
+      },
+      {
+        title: 'Liste des docteurs',
+        url: '/list',
+        icon: contractOutline
+      },
+      {
+        title: 'Update profil',
+        url: '/UpdateProfilePatient',
         icon: contractOutline
       },
     
@@ -88,6 +99,8 @@ this.title =titre
     }
     },
     mounted: function(){
+       this.nameuser =this.$store.state.auth.user.name ;
+
       this.title = this.$route.name;
 
    //  alert('hh)')

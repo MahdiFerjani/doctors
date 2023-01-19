@@ -1,5 +1,6 @@
 <template>
-
+    <ion-page id="main-content"> 
+    <ion-header class="back"></ion-header>
   <div class="head">
     <ion-menu-toggle>
               <ion-button fill="clear">
@@ -10,7 +11,8 @@
     <ion-avatar>
       <img alt="Silhouette of a person's head" src="https://github.com/vagnersabadi/ionic-doctor-appointments-app/blob/main/src/assets/avatar.png?raw=true" />
     </ion-avatar>
-    <ion-label>Mahdi</ion-label>
+    <ion-label>{{this.$store.state.auth.user.username
+}}</ion-label>
   </ion-chip>
     <ion-item class="head2" lines="none">
       <strong style="color:white;" >Doctor Appointment</strong>
@@ -97,12 +99,15 @@
     </div>
   </div>
   </ion-content>
+    </ion-page>
     </template>
     
     <script lang="ts">
 
   import {searchOutline } from 'ionicons/icons';
   import {
+    IonPage,
+    IonHeader,
        IonButton,
        IonContent,
        IonMenuToggle,
@@ -128,6 +133,9 @@
 
       export default defineComponent({
         components: {
+          IonPage,
+
+          IonHeader,
        IonButton,
        IonContent,
        IonIcon,
@@ -212,6 +220,7 @@
          
         },
         mounted: function(){
+          console.log(this.$store.state.auth.user.username )
         if (this.currentUser == null) {
         this.$router.push('/signin');
      }

@@ -10,8 +10,8 @@
   <ion-avatar>
     <img alt="Silhouette of a person's head" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
   </ion-avatar>
-  <ion-label>Mahdi</ion-label>
-</ion-chip>
+  <ion-label>{{this.$store.state.auth.user.username
+}}</ion-label></ion-chip>
 </ion-toolbar></ion-header>
 <ion-content>
   <ion-list>
